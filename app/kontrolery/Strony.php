@@ -12,7 +12,15 @@
             $this->wczytajWidok('strony/index', $dane);
         }
 
-        public function oNas() {
+        public function pomoc() {
+            $dane = array(
+                'tytul' => 'Pomoc'
+            );
+
+            $this->wczytajWidok('strony/pomoc', $dane);
+        }
+
+        public function o_nas() {
             $dane = array(
                 'tytul' => 'O nas'
             );

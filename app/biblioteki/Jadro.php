@@ -6,17 +6,19 @@
     class Jadro {
         protected $obecnyKontroler = 'Strony';
         protected $obecnaMetoda = 'index';
-        protected $parametry = [];
+        protected $parametry = array();
 
         public function __construct() {
             $url = $this->pobierzURL();
 
-            if (file_exists('../app/kontrolery/' . ucwords($url[0]) . '.php')) {
-                $this->obecnyKontroler = ucwords($url[0]);
-
-                unset($url[0]);
+            if (isset($url[0])) {
+                if (file_exists('../app/kontrolery/' . ucwords($url[0]) . '.php')) {
+                    $this->obecnyKontroler = ucwords($url[0]);
+    
+                    unset($url[0]);
+                }
             }
-
+            
             // Pobierz kontroler
             require_once '../app/kontrolery/' . $this->obecnyKontroler . '.php';
             $this->obecnyKontroler = new $this->obecnyKontroler;
@@ -28,19 +30,17 @@
                 }
             }
 
-            $this->parametry = $url ? array_values($url) : [];
+            $this->parametry = $url ? array_values($url) : array();
 
             call_user_func_array([$this->obecnyKontroler, $this->obecnaMetoda], $this->parametry);
         }
 
         public function pobierzURL() {
             if (isset($_GET['url'])) {
-                if (!empty($_GET['url'])) {
-                    $url = rtrim($_GET['url'], '/');
-                    $url = filter_var($url, FILTER_SANITIZE_URL);
-                    $url = explode('/', $url);
-                    return $url;
-                }
+                $url = rtrim($_GET['url'], '/');
+                $url = filter_var($url, FILTER_SANITIZE_URL);
+                $url = explode('/', $url);
+                return $url;                
             }
         }
     }
